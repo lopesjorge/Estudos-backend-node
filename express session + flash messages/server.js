@@ -24,7 +24,7 @@ const {middlewareGlobal} = require('./src/middlewares/middleware')//Middleware G
 
 //Express session
 const session = require('express-session')//Captura as sessions/dados do user no browser
-const MongoStore = require('connect-mongo');//Salva as sessions do user no browser
+const MongoStore = require('connect-mongo')//Salva as sessions do user no browser
 const flash = require('connect-flash')
 
 app.use(express.urlencoded({extended:true}))//Passa o caminho absoluto da views
@@ -32,18 +32,18 @@ app.use(routes)//Faz com que o app use todas as rotas definidas no arquivo de ro
 app.use(express.static(path.resolve(__dirname, 'public')))//Passando o caminho onde ficarão  os arquivos estáticos
 app.use(middlewareGlobal)//Faz com que todas as rotas passem pelo middleware definido
 
-const sessionOptions = session({
-    secret: 'akasdfj0út23453456+54qt23qv  qwf qwer qwer qewr asdasdasda a6()',
-    store: MongoStore.create({ mongoUrl: process.env.CONNECTIONSTRING }),
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true
-    }
-  });
+// const sessionOptions = session({
+//     secret: 'akasdfj0út23453456+54qt23qv  qwf qwer qwer qewr asdasdasda a6()',
+//     store: MongoStore.create({ mongoUrl: process.env.CONNECTIONSTRING }),
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       maxAge: 1000 * 60 * 60 * 24 * 7,
+//       httpOnly: true
+//     }
+//   });
 app.use(flash())
-app.use(sessionOptions)
+//app.use(sessionOptions)
 
 
 app.set('views', path.resolve(__dirname, 'src' , 'views')) //Seta o caminho da views
