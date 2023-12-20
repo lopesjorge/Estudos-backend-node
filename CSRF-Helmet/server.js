@@ -7,7 +7,8 @@ require('dotenv').config()
 const routes = require('./routes')
 const express = require('express')
 const app = express()
-
+const helmet = require('helmet')
+const csrf = require('csurf')
 const mongoose = require('mongoose')
 
 mongoose.connect(process.env.CONNECTIONSTRING, {useNewUrlParser: true}, {useUnifieldTopology: true})
@@ -20,7 +21,7 @@ mongoose.connect(process.env.CONNECTIONSTRING, {useNewUrlParser: true}, {useUnif
 })
 
 const path = require('path')
-const {middlewareGlobal} = require('./src/middlewares/middleware')//Middleware Global
+const {middlewareGlobal,checkCsrfError,csrfMiddleware} = require('./src/middlewares/middleware')//Middleware Global
 
 //Express session
 const session = require('express-session')//Captura as sessions/dados do user no browser
@@ -28,10 +29,13 @@ const MongoStore = require('connect-mongo')//Salva as sessions do user no browse
 const flash = require('connect-flash')
 
 app.use(express.urlencoded({extended:true}))//Passa o caminho absoluto da views
+app.use(csrf())
 app.use(routes)//Faz com que o app use todas as rotas definidas no arquivo de routes
 app.use(express.static(path.resolve(__dirname, 'public')))//Passando o caminho onde ficarão  os arquivos estáticos
 app.use(middlewareGlobal)//Faz com que todas as rotas passem pelo middleware definido
-
+app.use(checkCsrfError)
+app.use(csrfMiddleware)
+app.use(helmet())
 // const sessionOptions = session({
 //     secret: 'akasdfj0út23453456+54qt23qv  qwf qwer qwer qewr asdasdasda a6()',
 //     store: MongoStore.create({ mongoUrl: process.env.CONNECTIONSTRING }),

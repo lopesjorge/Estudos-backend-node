@@ -7,3 +7,14 @@ exports.middlewareGlobal = (req, res, next) =>{
     console.log('Caiu no else');
     next();
 }
+
+exports.checkCsrfError = (err, res, req, next) =>{
+    if(err &&  'EBADCSRFTOKEN' ===  err.code){
+        return res.render('error')
+    } 
+}
+
+exports.csrfMiddleware = (res, req, next)=>{
+    res.locals.csrfToken = req.csrfToken()
+    next()
+}

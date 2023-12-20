@@ -2,12 +2,13 @@
 <body>
   <h1>
    <%= titule%> <br>
-   <% numeros.forEach(num => {%>
+   <!-- <% numeros.forEach(num => {%>
     <%= num %> <br>
-    <% })%>
+    <% })%> -->
   </h1>
 
   <form action="/" method="post">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <label>cleinte:</label>
     <input type="text" name="cliente">
     <button type="submit">Enviar</button>
